@@ -16,5 +16,7 @@ py -3 SecretFinder -f url.txt -t 10 --proxy="http://127.0.0.1:8080" -o output.tx
 
 
 建议配合以下两个工具使用
+
 https://github.com/pingc0y/URLFinder 
+
 https://github.com/deibit/cansina

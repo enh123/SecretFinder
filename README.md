@@ -10,6 +10,7 @@
 
 用法:
 py -3 SecretFinder -u http://baidu.com
+
 py -3 SecretFinder -f url.txt -t 10 --proxy="http://127.0.0.1:8080" -o output.txt
 
 

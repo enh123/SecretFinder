@@ -9,6 +9,7 @@
 在这里贴一个wih windows版本的地址https://github.com/adysec/ARL/blob/3eb45fb09361fd4f713768542e07829d463fc707/tools/wih/wih_amd64.exe
 
 用法:
+
 py -3 SecretFinder -u http://baidu.com
 
 py -3 SecretFinder -f url.txt -t 10 --proxy="http://127.0.0.1:8080" -o output.txt

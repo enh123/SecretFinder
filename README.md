@@ -1,4 +1,4 @@
-更适合中国宝宝体质的SecretFinder~
+SecretFinder
 
 本项目借鉴了该项目:https://github.com/abhi-recon/jssecretscanner
 

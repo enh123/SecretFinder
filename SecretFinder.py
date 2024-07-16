@@ -155,7 +155,7 @@ class SecretFinder:
             for pattern, description in self.patterns_descriptions:
                 links_data = self.matched_content[pattern]
                 if links_data:
-                    print(f"\n{description}:")
+                    print(f"\n{Fore.YELLOW}{description}:")
                     if '-o' in sys.argv or '--output' in sys.argv:
                         outputfile.write(f"\n{description}:")
                     for link, matches in links_data.items():

@@ -30,7 +30,7 @@ class SecretFinder:
             "Priority": "u=0, i",
             "Te": "trailers"
         }
-        self.regex_patterns = [
+        self.patterns_descriptions = [
             (re.compile(r'api[key|_key|\\s+]+[a-zA-Z0-9_\\-]{5,100}'), "API key"),
             (re.compile(r'key-[0-9a-zA-Z]{32}'), "key"),
             (re.compile(r'[a-zA-Z0-9_-]*:[a-zA-Z0-9_\\-]+@github\\.com*'), "Github令牌"),
@@ -72,7 +72,7 @@ class SecretFinder:
             (re.compile(r'\bglc_[A-Za-z0-9\-_+/]{32,200}={0,2}\b'), "Grafana cloud API token"),
             (re.compile(r'\bLTAI[A-Za-z\d]{12,30}\b'), "阿里云 AccessKeyID"),
             (re.compile(r'\b(?!(?:.*[\/.]))(?=(?:.*\d){2})[A-Za-z\d]{30}\b'), "阿里云 AccessSecretKey"),
-            (re.compile(r'1[34578]\d{9}'), " 手机号"),
+            (re.compile(r'1[34578]\d{9}'), "手机号"),
             (re.compile(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.(?!png|jpg|gif)[a-zA-Z0-9-.]+'), "邮箱"),
             (re.compile(r'\d{6}(?:19|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}[\dXx]'), "身份证号码"),
             (re.compile(
@@ -82,7 +82,7 @@ class SecretFinder:
                 r'(?i)(password|passwd|pwd|username|uid|secret|osskey|admin|api|app_key|DB_USERNAME_SQLSRV|DB_PASSWORD_SQLSRV|DB_DATABASE_SQLSRV|accesskey|access_key|ALIYUN_OSS_ACCESS_KEY_SECRET|ALIYUN_OSS_ACCESS_KEY_ID|ALIYUN_SMS_ACCESS_KEY_ID|ALIYUN_SMS_ACCESS_KEY_SECRET|appid|accesstoken|appsecret|corpid|corpsecret|app_id|app_secret|T_access_token|t_access_token|secret|accessKeySecret|accessKeyId|aliosstoken)[\'"]?\s*[:=]\s*[\'"]?([0-9a-zA-Z]{2,})[\'"]?'),
              "杂项"),
             (re.compile(
-                r'(?i)((access_key|access_token|admin_pass|admin_user|algolia_admin_key|algolia_api_key|alias_pass|alicloud_access_key|amazon_secret_access_key|amazonaws|ansible_vault_password|aos_key|api_key|api_key_secret|api_key_sid|api_secret|api\.googlemaps|apidocs|apikey|apiSecret|app_debug|app_id|app_key|app_log_level|app_secret|appkey|appkeysecret|application_key|appsecret|appspot|auth_token|authorizationToken|authsecret|aws_access|aws_access_key_id|aws_bucket|aws_key|aws_secret|aws_token|AWSSecretKey|b2_app_key|bashrc password|bintray_apikey|bintray_gpg_password|bintray_password|boto|ca_certs|cert|client_secret|client_secret_key|cloud_password|cloudflare_token|cloudfront_key_pair_id|cloudflare_secret|console_access_key|data|db_password|db_user|dbpass|discord_token|dynamodb_access_key|dynamodb_secret_key|dropbox_key|dropbox_secret|ebay_secret|ebay_token|elasticsearch_password|elasticsearch_username|facebook_app_id|facebook_secret|firebase_key|github_auth_token|github_password|github_user|gitee_access_token|glitch_pass|gpg_secret_key|grafana_api_key|grafana_secret|heroku_key|honeycode_token|jira_api_token|kafka_password|kafka_user|keycloak_secret|kubernetes_token|laravel_key|ldap_password|linode_api_key|mailchimp_key|mailgun_api_key|mailjet_api_key|mailjet_secret|mongodb_password|mongodb_uri|my_sql_pass|my_sql_user|oauth_key|okta_api_key|okta_secret|one_password_secret|openai_key|openweathermap_api_key|outlook_token|passphrase|personal_access_token|password|paypal_key|private_key|provider_token|pypi_password|redis_password|sendgrid_key|shopify_password|slack_token|smtp_password|smtp_user|stripe_api_key|stripe_secret_key|terraform_key|tiktok_access_token|twitter_api_key|twitter_secret|vcenter_password|vault_key|vault_pass|veracode_api_key|xero_api_key|yandex_api_key|zabbix_api_token|zenodo_access_token|zohocrm_api_key|zoho_oauth|zoho_password|zuora_api_key|zoho_api_key|api_key|access_key|access_key_secret|secret|key|token|API|KEY|TOKEN)[\'"]?\s*[:=]\s*[\'"]?([0-9A-Za-z\-_.]{32,100})[\'"]?)(?=\s|$|")'),
+                r'(?i)((access_key|access_token|admin_pass|admin_user|algolia_admin_key|algolia_api_key|alias_pass|alicloud_access_key|amazon_secret_access_key|amazonaws|ansible_vault_password|aos_key|api_key|api_key_secret|api_key_sid|api_secret|api\.googlemaps|apidocs|apikey|apiSecret|app_debug|app_id|app_key|app_log_level|app_secret|appkey|appkeysecret|application_key|appsecret|appspot|auth_token|authorizationToken|authsecret|aws_access|aws_access_key_id|aws_bucket|aws_key|aws_secret|aws_token|AWSSecretKey|b2_app_key|bashrc password|bintray_apikey|bintray_gpg_password|bintray_password|boto|ca_certs|cert|client_secret|client_secret_key|cloud_password|cloudflare_token|cloudfront_key_pair_id|cloudflare_secret|console_access_key|data|db_password|db_user|dbpass|discord_token|dynamodb_access_key|dynamodb_secret_key|dropbox_key|dropbox_secret|ebay_secret|ebay_token|elasticsearch_password|elasticsearch_username|facebook_app_id|facebook_secret|firebase_key|github_auth_token|github_password|github_user|gitee_access_token|glitch_pass|gpg_secret_key|grafana_api_key|grafana_secret|heroku_key|honeycode_token|jira_api_token|kafka_password|kafka_user|keycloak_secret|kubernetes_token|laravel_key|ldap_password|linode_api_key|mailchimp_key|mailgun_api_key|mailjet_api_key|mailjet_secret|mongodb_password|mongodb_uri|my_sql_pass|my_sql_user|oauth_key|okta_api_key|okta_secret|one_password_secret|openai_key|openweathermap_api_key|outlook_token|passphrase|personal_access_token|password|paypal_key|private_key|provider_token|pypi_password|redis_password|sendgrid_key|shopify_password|slack_token|smtp_password|smtp_user|stripe_api_key|stripe_secret_key|terraform_key|tiktok_access_token|twitter_api_key|twitter_secret|vcenter_password|vault_key|vault_pass|veracode_api_key|xero_api_key|yandex_api_key|zabbix_api_token|zenodo_access_token|zohocrm_api_key|zoho_oauth|zoho_password|zuora_api_key|zoho_api_key|api_key|access_key|access_key_secret|secret|key|token|API|KEY|TOKEN|user_name|Lodop_key)[\'"]?\s*[:=]\s*[\'"]?([0-9A-Za-z\-_.]{32,100})[\'"]?)(?=\s|$|")'),
              "杂项"),
             # 以下是secretfinder原项目的正则
             (re.compile(r'AIza[0-9A-Za-z-_]{35}'), "google_api"),
@@ -114,10 +114,8 @@ class SecretFinder:
             (re.compile(r'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$'), "json_web_token"),
             (re.compile(r'"api_token":"(xox[a-zA-Z]-[a-zA-Z0-9-]+)"'), "slack_token"),
             (re.compile(r'[-]+BEGIN [^\s]+ PRIVATE KEY[-]+[\s]*[^-]*[-]+END [^\s]+ PRIVATE KEY[-]+'), "SSH_privKey"),
-            (re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'),
-             "Heroku API KEY")
         ]
-        self.matched_content = {regex: {} for regex, _ in self.regex_patterns}
+        self.matched_content = {pattern: {} for pattern, description in self.patterns_descriptions}
 
     def banner(self):
         title = pyfiglet.figlet_format("Secret Finder", font='standard')
@@ -125,12 +123,12 @@ class SecretFinder:
 
     def match_data(self, url, progress_bar=None):
         try:
-            response = requests.get(url.strip(), headers=self.headers, proxies=self.proxy, verify=False, timeout=15)
-            if response.text is not None:
-                for regex, _ in self.regex_patterns:
-                    matches = regex.findall(response.text)
+            response = requests.get(url.strip(), headers=self.headers, proxies=self.proxy, verify=False, timeout=10)
+            if response.status_code == 200:
+                for pattern, description in self.patterns_descriptions:
+                    matches = pattern.findall(response.text)
                     if matches:
-                        self.matched_content[regex][url.strip()] = matches
+                        self.matched_content[pattern][url.strip()] = matches
         except:
             pass
 
@@ -151,38 +149,36 @@ class SecretFinder:
                     thread.join()
 
     def print_result(self):
+        if '-o' in sys.argv or '--output' in sys.argv:
+            outputfile = open(self.output_filename, 'a', encoding='utf-8')
         if self.matched_content:
-            for regex, description in self.regex_patterns:
-                links_data = self.matched_content[regex]
+            for pattern, description in self.patterns_descriptions:
+                links_data = self.matched_content[pattern]
                 if links_data:
-                    print(f"\nregex_pattern '{regex.pattern.strip()}' ({description}):")
+                    print(f"\n{description}:")
+                    if '-o' in sys.argv or '--output' in sys.argv:
+                        outputfile.write(f"\n{description}:")
                     for link, matches in links_data.items():
-                        print(f"\nresult from {link.strip()}:")
+                        print(f"result from: {link}:")
+                        if '-o' in sys.argv or '--output' in sys.argv:
+                            outputfile.write(f"\nresult from: {link}:\n")
                         for match in matches:
                             print(f"{Fore.RED}{match}")
-        else:
-            print("No matches found.")
+                            if '-o' in sys.argv or '--output' in sys.argv:
+                                outputfile.write(f"{match}\n")
 
-    def output(self):
-        output_file_path = self.output_filename
-        with open(output_file_path, "w", encoding="utf-8") as output_file:
-            for regex, description in self.regex_patterns:
-                urls_data = self.matched_content[regex]
-                output_file.write(f"\nregex_pattern '{regex.pattern}' ({description}):\n")
-                if urls_data:
-                    for url, matches in urls_data.items():
-                        output_file.write(f"\nresult from {url}:\n")
-                        for match in matches:
-                            output_file.write(f"{match}\n")
+        else:
+            print("未找到任何敏感信息......")
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", help="指定一个url", dest="url", required=False)
     parser.add_argument("-f", dest='file', required=False, help="指定一个url文件")
-    parser.add_argument("-t", "-threads", "--threads", help="设置线程数,默认10个线程", dest="threads", required=False,
-                        default=10, type=int)
+    parser.add_argument("-t", "-threads", "--threads", help="设置线程数,默认3个线程", dest="threads", required=False,
+                        default=3, type=int)
     parser.add_argument("-p", "-proxy", "--proxy", dest="proxy", help="设置代理", required=False)
-    parser.add_argument("-o", "-output", "--output", help="将结果输出", dest="output_filename", required=False)
+    parser.add_argument("-o", "--output", help="将结果输出", dest="output_filename", required=False)
     args = parser.parse_args()
     secretfinder = SecretFinder(args.file, args.threads, args.proxy, args.output_filename)
     secretfinder.banner()
@@ -191,8 +187,6 @@ def main():
     if "-f" in sys.argv and "-u" not in sys.argv:
         secretfinder.multiple_thread()
     secretfinder.print_result()
-    if args.output_filename:
-        secretfinder.output()
 
 
 if __name__ == '__main__':

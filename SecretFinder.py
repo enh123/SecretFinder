@@ -128,7 +128,7 @@ class SecretFinder:
                 if matched_data:
                     self.data_dict[pattern][url.strip()] = matched_data
 
-        except :
+        except:
             pass
 
         if "-f" in sys.argv and "-u" not in sys.argv:
@@ -140,6 +140,17 @@ class SecretFinder:
             is_output = True
         else:
             is_output = False
+        is_None = True
+        for pattern, description in self.pattern_description:
+            urls_data = self.data_dict[pattern]
+            if urls_data != {}:  #不为空
+                print(urls_data)
+                is_None = False
+            else:
+                continue
+        if is_None:
+            sys.exit("\n" + Fore.RED + "未找到敏感信息")
+
         for pattern, description in self.pattern_description:
             urls_data = self.data_dict[pattern]
             if urls_data:

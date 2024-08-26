@@ -144,10 +144,8 @@ class SecretFinder:
         for pattern, description in self.pattern_description:
             urls_data = self.data_dict[pattern]
             if urls_data != {}:  #不为空
-                print(urls_data)
                 is_None = False
-            else:
-                continue
+
         if is_None:
             sys.exit("\n" + Fore.RED + "未找到敏感信息")
 

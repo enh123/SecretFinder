@@ -1,12 +1,13 @@
 import requests
 import pyfiglet
 from tqdm import tqdm
-from colorama import Fore
+from colorama import Fore, init
 import argparse
 import re
 import sys
 import threading
 
+init(autoreset=True)
 requests.packages.urllib3.disable_warnings()
 
 

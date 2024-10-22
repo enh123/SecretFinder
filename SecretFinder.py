@@ -187,7 +187,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", dest="url", help="指定一个url", required=False)
     parser.add_argument("-f", dest="file", help="指定一个url文件", required=False)
-    parser.add_argument("-t", "--threads", dest="threads", type=int, help="设置线程数,默认为1个线程", default=1)
+    parser.add_argument("-t", "--threads", dest="threads", type=int, help="设置线程数,默认为10个线程", default=10)
     parser.add_argument("-p", "--proxy", "-proxy", dest="proxy", help="设置代理,例如:--proxy=http:127.0.0.1",
                         required=False)
     parser.add_argument("-o", "--output", dest="output_file_name", help="输出到一个指定文件", required=False)

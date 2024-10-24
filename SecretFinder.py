@@ -13,11 +13,11 @@ requests.packages.urllib3.disable_warnings()
 
 class SecretFinder:
     def __init__(self, url, file, threads, proxy, output_file_name):
-        self.url = url
-        self.file = file
+        self.url = url if url else None
+        self.file = file if file else None
         self.threads = threads
-        self.proxy = {"http": proxy}
-        self.output_file_name = output_file_name
+        self.proxy = {"http": proxy} if proxy else None
+        self.output_file_name = output_file_name if output_file_name else None
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
@@ -123,14 +123,18 @@ class SecretFinder:
 
     def match_data(self, url, process_bar=None):
         try:
-            response = requests.get(url.strip(), headers=self.headers, proxies=self.proxy, verify=False, timeout=20)
+            response = requests.get(url.strip(), headers=self.headers, proxies=self.proxy, verify=False, timeout=5)
+        except:
+            if "-f" in sys.argv and "-u" not in sys.argv:
+                process_bar.update(1)
+            return
+
+        if response.text:
             for pattern, description in self.pattern_description:
                 matched_data = pattern.findall(response.text)
                 if matched_data:
                     self.data_dict[pattern][url.strip()] = matched_data
-
-        except:
-            pass
+            
 
         if "-f" in sys.argv and "-u" not in sys.argv:
             process_bar.update(1)

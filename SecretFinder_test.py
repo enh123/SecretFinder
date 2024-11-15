@@ -196,7 +196,7 @@ class SecretFinder:
     def muiltiple_thread(self):
         with open(self.file, "r", encoding='utf-8') as file:
             urls = file.readlines()
-            with tqdm(total=len(urls), desc="Process", unit="url") as process_bar:
+            with tqdm(total=len(urls),desc="process", bar_format="{l_bar}{bar}time [{elapsed}]") as process_bar:
                 with ThreadPoolExecutor(max_workers=self.threads,) as Executor:
                     futures=[(Executor.submit(self.match_data,url,process_bar)) for url in urls]
                     for future in futures:

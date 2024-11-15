@@ -1,4 +1,4 @@
-SecretFinder
+SecretFinder 敏感信息搜索工具
 
 本项目借鉴了该项目:https://github.com/abhi-recon/jssecretscanner
 

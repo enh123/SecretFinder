@@ -16,7 +16,7 @@ py -3 main.py -f url.txt -t 10 --proxy="http://127.0.0.1:8080"
 
  httpx -l secret_urls.txt -mc 200 --retries 3 >> final_urls.txt
 
- py -3 main.py -f final_urls.tx -t 10 --proxy="http://127.0.0.1:8080" -d baidu.com,baidu.cn >> result.txt
+ py -3 main.py -f final_urls.txt -t 10 --proxy="http://127.0.0.1:8080" -d baidu.com,baidu.cn >> result.txt
  
 
 

@@ -44,8 +44,6 @@ class InitializeClass:
         if args.proxy:
             config.set_value("proxy", {"http": f"{args.proxy}", "https": f"{args.proxy}"})
 
-        if args.output_file_name:
-            config.set_value("output_file_name", args.output_file_name)
 
     def check_all(self):
         check.check_args()

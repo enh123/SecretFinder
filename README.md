@@ -1,4 +1,4 @@
-SecretFinder 敏感信息搜索工具
+SecretFinder 渗透测试敏感信息搜索工具
 
 用法一：
 ![{D6FD4B0C-9115-4E00-BE86-76AF7C5D144B}_mosaic(1)](https://github.com/user-attachments/assets/122b3aa9-9801-4ddd-a784-dbfb3134e728)

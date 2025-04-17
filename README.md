@@ -1,10 +1,10 @@
 SecretFinder 敏感信息搜索工具
 
-用法:
 
-py -3 main.py -u http://baidu.com
 
-py -3 main.py -f url.txt -t 10 --proxy="http://127.0.0.1:8080"
+
+![Uploading {D6FD4B0C-9115-4E00-BE86-76AF7C5D144B}_mosaic(1).png…]()
+
 
 
 

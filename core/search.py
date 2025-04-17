@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from modules import config, find_param, find_path, find_subdomain
 
-init(autoreset=True)
+init(autoreset=True, strip=False) 
 requests.packages.urllib3.disable_warnings()
 
 

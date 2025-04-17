@@ -200,7 +200,7 @@ def get_pattern_description():
         (re.compile(r'\bAKID[A-Za-z\d]{13,40}\b'), "腾讯云 AccessKey ID"),  # 未验证
         (re.compile(r'AKID[A-Za-z0-9]{13,20}'), "腾讯云  AccessKey ID"),  # 未验证
         (re.compile(r'\bJDC_[0-9A-Z]{25,40}\b'), "京东云 AccessKey ID"),  # 未验证
-        (re.compile(r'"''[A-Z0-9]{16}["'']'), "亚马逊 AccessKey ID"),  # 未验证
+        #(re.compile(r'"''[A-Z0-9]{16}["'']'), "亚马逊 AccessKey ID"),  # 未验证
         (re.compile(r'\b(?:AKLT|AKTP)[a-zA-Z0-9]{35,50}\b'), "火山引擎 AccessKey ID"),  # 未验证
         (re.compile(r'\bAKLT[a-zA-Z0-9\-_]{16,28}\b'), "金山云 AccessKey ID"),  # 未验证
         (re.compile(r'\bAIza[0-9A-Za-z_\-]{35}\b'), "谷歌云 AccessKey ID"),  # 未验证
@@ -284,7 +284,7 @@ def get_pattern_description():
          "appid"),
 
         (re.compile(
-            r'''(?i)["']?app_id["']?\s*[:=]\s*(?:(["'])([^!@#$%^&*()'".\\]{4,50})\1|([^!@#$%^&*()'".\\\s]{4,32}))'''),
+            r'''(?i)["']?app_id["']?\s*[:=]\s*(?:(["'])([^!@#$%^&*()'".:,\\]{4,50})\1|([^!@#$%^&*()'".\\\s]{4,32}))'''),
          "app_id"),
 
         (re.compile(

@@ -1,41 +1,59 @@
-import sys
-import requests
-from modules import config
 import re
+import sys
+import pyfiglet
+from colorama import Fore
+from modules import config
 
-requests.packages.urllib3.disable_warnings()
 
 def check_args():
-
-    if config.get_value("url") ==None and config.get_value("file")==None :
+    if not (config.get_value("url") or config.get_value("file")):
         sys.exit("请指定一个url或url文件")
 
-    if config.get_value("url")!=None and config.get_value("file")!=None:
-        sys.exit("-u 和 -f 参数只能使用一个")
+    elif config.get_value("url") and config.get_value("file"):
+        sys.exit("-u和-f不能同时使用")
+
+    elif  config.get_value("url") and ("-param" in sys.argv or "--param" in sys.argv):
+        sys.exit("-u 和 -param 不能同时使用,正确用法为 python3 main.py -f url.txt -param")
+
 
 def check_url_format(url):
-    def extract_port(url):
-        try:
-            match = re.search(r':(\d+)', url)
-            if match:
-                return int(match.group(1))
-            else:
-                return None
-        except Exception as e:
-            return None
-
     if not (url.startswith("http://") or url.startswith("https://")):
-        try:
-            port = extract_port(url)
+            pattern = re.compile(r':(\d+)')
+            try:
+                port = int(pattern.search(url).group(1))
+            except Exception as e:
+                port=None
+                pass
             if port:
                 if int(port) != 443:
                     url = "http://" + url
                 else:
                     url = "https://" + url
-        except:
-            pass
+            else:
+                url = "http://" + url
+
     return url
 
+def banner():
+    print(Fore.CYAN+pyfiglet.figlet_format("Secret Finder",font="standard"))
 
+def main():
+    check_args()
+    url=config.get_value("url")
+    if url:
+        url=check_url_format(url)
+        config.set_value("url",url if url else None)
 
-
+    if config.get_value("file"):
+        try:
+            with open(config.get_value("file"),"r",encoding='utf-8') as file:
+                url_list=[]
+                for url in file.readlines():
+                    url=check_url_format(url.strip())
+                    if url:
+                        url_list.append(url)
+                if url_list:
+                    config.set_value("url_list",url_list)
+        except Exception as e:
+            sys.exit(e)
+    banner()

@@ -65,7 +65,7 @@ class Search:
         if self._stop_flag:
             return
 
-        if response.text:
+        if response.text and response.status_code!=404:
             for pattern, description in self.pattern_description:
                 matched_data = pattern.findall(response.text)
                 if matched_data:

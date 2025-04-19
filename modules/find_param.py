@@ -1,6 +1,6 @@
 import re
 from colorama import Fore
-from . import config
+from modules import config
 
 def main():
     key_list = []

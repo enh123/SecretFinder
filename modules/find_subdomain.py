@@ -1,5 +1,5 @@
 import re
-from . import config
+from modules import config
 import tldextract
 
 def find_subdomain(response_text):

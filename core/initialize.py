@@ -1,7 +1,5 @@
 import argparse
-
-from modules import check, config
-
+from modules import  config
 
 class InitializeClass:
     def process_args(self):
@@ -14,6 +12,9 @@ class InitializeClass:
         parser.add_argument("-d", "--domain", dest="domain",
                             help="提供主域名用于抓取相应包中的子域名,可以指定多个,用逗号分隔,例如-d baidu.com,baidu.cn",
                             required=False)
+        parser.add_argument("-param", "--param",
+                            help="不发起请求,提取url中的参数和值,与-f一起使用",
+                            required=False,action="store_true")
         parser.add_argument("-timeout", "--timeout", dest="timeout", help="请求最长等待时间", required=False,
                             default="25")
         parser.add_argument("-t", "--threads", dest="threads", type=int, help="设置线程数,默认为10个线程", default=10)
@@ -45,21 +46,7 @@ class InitializeClass:
             config.set_value("proxy", {"http": f"{args.proxy}", "https": f"{args.proxy}"})
 
 
-    def check_all(self):
-        check.check_args()
-        if config.get_value("url") != None and config.get_value("file") == None:
-            url = check.check_url_format(config.get_value("url").strip())
-            config.set_value("url", url)
-
-        if config.get_value("file") != None and config.get_value("url") == None:
-            with open(config.get_value("file"), "r", encoding='utf-8') as file:
-                url_list = []
-                for url in file.readlines():
-                    url_list.append(check.check_url_format(url.strip()))
-                config.set_value("url_list", url_list)
-
-
 def main():
     initialize_instance = InitializeClass()
     initialize_instance.process_args()
-    initialize_instance.check_all()
+

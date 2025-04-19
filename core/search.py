@@ -11,9 +11,8 @@ from tqdm import tqdm
 
 from modules import config, find_param, find_path, find_subdomain
 
-init(autoreset=True, strip=False) 
+init(autoreset=True, strip=False)  # 添加 strip=False
 requests.packages.urllib3.disable_warnings()
-
 
 class Search:
     def __init__(self):
@@ -47,11 +46,7 @@ class Search:
 
         self.subdomain_list = []
 
-    @staticmethod
-    def banner():
-        print(Fore.CYAN + pyfiglet.figlet_format("Secret Finder", font="standard"))
-
-    def _signal_handler(self, signum, frame):
+    def _signal_handler(self,):
         """处理终止信号"""
         self._stop_flag = True
         print("\n" + Fore.RED + "正在强制终止...")
@@ -133,22 +128,24 @@ class Search:
     def muiltiple_thread(self):
         with tqdm(total=len(self.url_list), desc="process",
                   bar_format="{l_bar}{bar} {n_fmt}/{total_fmt} time [{elapsed}]") as process_bar:
-            with ThreadPoolExecutor(max_workers=self.threads, ) as Executor:
-                futures = [(Executor.submit(self.match_data, url, process_bar)) for url in self.url_list]
-                for future in futures:
+            with ThreadPoolExecutor(max_workers=self.threads, ) as executor:
+                future_list = []
+                for url in self.url_list:
+                    future = executor.submit(self.match_data, url, process_bar)
+                    future_list.append(future)
+                for future in future_list:
                     future.result()
 
 
 def main():
     search = Search()
-    search.banner()
-    if config.get_value("url") is None and config.get_value("file") is not None and "-param" in sys.argv:
+    if not search.url and search.url_list and ("-param" in sys.argv or "--param" in sys.argv):
         find_param.main()
         sys.exit()
 
-    if config.get_value("url") is not None and config.get_value("file") is None:
+    if search.url and not search.url_list:
         search.match_data(config.get_value("url"))
-    if config.get_value("url") is None and config.get_value("file") is not None:
+    if not search.url and search.url_list:
         search.muiltiple_thread()
 
     search.print_result()

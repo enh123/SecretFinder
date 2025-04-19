@@ -1,5 +1,5 @@
 import re
-from . import config
+from modules import config
 
 def find_path(response_text):
     # hae 正则

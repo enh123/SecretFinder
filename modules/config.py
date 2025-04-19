@@ -42,6 +42,7 @@ def get_path_list():
     return result
 
 
+
 def set_subdomain(subdomain):
     if subdomain:
         subdomain_list.append(subdomain.strip())

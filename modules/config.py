@@ -1,31 +1,52 @@
 import re
+import sys
 from urllib.parse import urlparse, parse_qs
 
 args_dict = {}
+url_list = []
 path_list = []
-subdomain_list = []
+subdomain_list=[]
 
-
-def set_value(key, value):
-    if key and value:
-        args_dict[key] = value
-
-
-def get_value(key):
+def set_args(key, value):
     try:
-        value = args_dict[key]
-        if value:
-            return value
+        if key:
+            args_dict[key] = value if value is not None else None  # 处理 None 值
+        else:
+            raise ValueError("key不存在")
+    except Exception as e:
+        sys.exit(e)
+
+
+def get_args( key):
+    try:
+        if key and args_dict[key]:
+            return args_dict[key]
         else:
             return None
     except Exception as e:
         return None
 
 
+def set_url_list(urllist):
+    global url_list
+    if urllist:
+        url_list = urllist
+
+def get_url_list():
+    if url_list:
+        return url_list
+    else:
+        return None
+
+def set_subdomain(subdomain):
+    if subdomain:
+        subdomain_list.append(subdomain)
+def get_subdomain_list():
+    return set(subdomain_list)
+
 def set_path(path):
     if path:
         path_list.append(path.strip())
-
 
 def get_path_list():
     seen = set()
@@ -40,19 +61,6 @@ def get_path_list():
             seen.add(dedup_key)
             result.append(path)
     return result
-
-
-
-def set_subdomain(subdomain):
-    if subdomain:
-        subdomain_list.append(subdomain.strip())
-
-
-def get_subdomain_list():
-    if subdomain_list:
-        return set(subdomain_list)
-    else:
-        return None
 
 
 def get_pattern_description():
@@ -103,7 +111,8 @@ def get_pattern_description():
             r'''(?i)["']?ALIYUN_OSS_ENDPOINT["']?\s*[:=]\s*(?:(["'])([^!@#$%^&*()'"\\]{15,100})\1|([^!@#$%^&*()'"\\\s]{15,100}))'''),
          "ALIYUN_OSS_ENDPOINT"),
 
-        (re.compile(r'''(?i)["']?ALIYUN_OSS_BUCKET["']?\s*[:=]\s*(?:(["'])([^'"\\]{15,100})\1|([^"'\s]{15,100}))'''),
+        (re.compile(
+            r'''(?i)["']?ALIYUN_OSS_BUCKET["']?\s*[:=]\s*(?:(["'])([^'"\\]{15,100})\1|([^"'\s]{15,100}))'''),
          "ALIYUN_OSS_BUCKET"),
 
         (re.compile(
@@ -201,7 +210,7 @@ def get_pattern_description():
         (re.compile(r'\bAKID[A-Za-z\d]{13,40}\b'), "腾讯云 AccessKey ID"),  # 未验证
         (re.compile(r'AKID[A-Za-z0-9]{13,20}'), "腾讯云  AccessKey ID"),  # 未验证
         (re.compile(r'\bJDC_[0-9A-Z]{25,40}\b'), "京东云 AccessKey ID"),  # 未验证
-        #(re.compile(r'"''[A-Z0-9]{16}["'']'), "亚马逊 AccessKey ID"),  # 未验证
+        # (re.compile(r'"''[A-Z0-9]{16}["'']'), "亚马逊 AccessKey ID"),  # 未验证
         (re.compile(r'\b(?:AKLT|AKTP)[a-zA-Z0-9]{35,50}\b'), "火山引擎 AccessKey ID"),  # 未验证
         (re.compile(r'\bAKLT[a-zA-Z0-9\-_]{16,28}\b'), "金山云 AccessKey ID"),  # 未验证
         (re.compile(r'\bAIza[0-9A-Za-z_\-]{35}\b'), "谷歌云 AccessKey ID"),  # 未验证
@@ -225,7 +234,8 @@ def get_pattern_description():
 
         (re.compile(r'''[=:]?\s*["\']?(wx[a-z0-9]{15,18})["\']?'''), "微信 公众号/小程序 APPID"),
 
-        (re.compile(r'\bhttps://oapi.dingtalk.com/robot/send\?access_token=[a-z0-9]{50,80}\b'), "钉钉 webhook"),  # 未验证
+        (re.compile(r'\bhttps://oapi.dingtalk.com/robot/send\?access_token=[a-z0-9]{50,80}\b'), "钉钉 webhook"),
+        # 未验证
 
         # (re.compile(r'''[=:]?\s*["']?(ding[a-z0-9]{18})["']?'''), "ding_appId"),
         (re.compile(r'''\bding[a-z0-9]{16,18}\b'''), "ding_appId corpId"),
@@ -255,7 +265,8 @@ def get_pattern_description():
         (re.compile(r'["''](gh_[a-z0-9]{11,13})["'']'), "微信公众号id"),
         (re.compile(r'\bhttps://qyapi.weixin.qq.com/cgi-bin/webhook/send\?key=[a-zA-Z0-9\-]{25,50}\b'),
          "企业微信 webhook"),  # 未验证
-        (re.compile(r'\bhttps://oapi.dingtalk.com/robot/send\?access_token=[a-z0-9]{50,80}\b'), "钉钉 webhook"),  # 未验证
+        (re.compile(r'\bhttps://oapi.dingtalk.com/robot/send\?access_token=[a-z0-9]{50,80}\b'), "钉钉 webhook"),
+        # 未验证
         (re.compile(r'\bhttps://open.feishu.cn/open-apis/bot/v2/hook/[a-z0-9\-]{25,50}\b'), "飞书 webhook"),  # 未验证
         (re.compile(
             r'\bhttps://hooks.slack.com/services/[a-zA-Z0-9\-_]{6,12}/[a-zA-Z0-9\-_]{6,12}/[a-zA-Z0-9\-_]{15,24}\b'),

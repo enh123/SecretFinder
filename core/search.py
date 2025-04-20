@@ -45,7 +45,6 @@ class Search:
                                         timeout=self.timeout)
         except Exception as e:
             if self.url_list and not self.url:
-                print(e)
                 process_bar.update(1)
             return
 

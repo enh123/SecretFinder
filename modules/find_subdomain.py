@@ -1,41 +1,34 @@
 import re
-from functools import lru_cache
-
-import tldextract
 
 from modules import config
 
+# hae 正则
+pattern = r'''(?:"|')(((?:[a-zA-Z]{1,10}://|//)[^"'/]{1,}\.[a-zA-Z]{2,}[^"']{0,})|((?:/|\.\./|\./)[^"'><,;|*()(%%$^/\\\[\]][^"'><,;|()]{1,})|([a-zA-Z0-9_\-/]{1,}/[a-zA-Z0-9_\-/]{1,}\.(?:[a-zA-Z]{1,4}|action)(?:[\?|#][^"|']{0,}|))|([a-zA-Z0-9_\-/]{1,}/[a-zA-Z0-9_\-/]{3,}(?:[\?|#][^"|']{0,}|))|([a-zA-Z0-9_\-]{1,}\.(?:\w)(?:[\?|#][^"|']{0,}|)))(?:"|')'''
 
-@lru_cache(maxsize=1)  # Least Recently Used Cache
-def _get_patterns():
-    url = config.get_args("url")
-    url_list = config.get_url_list()
-    domain_list = config.get_args("domain_list")
-
-    patterns = []
-    if domain_list:
-        for dom in domain_list:
-            patterns.append(
-                re.compile(r'(?:[A-Za-z0-9_-]+\.)+' + re.escape(dom))
-            )
-    elif url and not url_list:
-        parsed = tldextract.extract(url)
-        top = f"{parsed.domain}.{parsed.suffix}"
-        patterns.append(
-            re.compile(r'(?:[A-Za-z0-9_-]+\.)+' + re.escape(top))
-        )
-
-    return patterns
+pattern = re.compile(pattern, re.VERBOSE)
 
 
 def find(response_text):
-    if not config.get_args("domain_list") and not config.get_args("url"):
-        return
+    matches = pattern.findall(response_text)
 
-    for pat in _get_patterns():
-        try:
-            for sub in pat.findall(response_text):
-                config.set_subdomain(sub.strip())
-        except Exception:
-            # 某些边缘正则可能会抛错，忽略即可
-            continue
+    black_list = [
+        '.css', '.jpg', '.png', '.woff', '.swf'
+                                         '.bmp', '.gif', '.ico', '.jpeg', '.tiff', '.webp',
+        '.eot', '.otf', '.ttf', '.woff2',
+        '.mp3', '.mp4', '.avi', '.mov', '.wav',
+    ]
+
+    for match in matches:
+        path = match[0]
+        if ("http://" not in path and "https://" not in path) and not any(
+                i in match[0].lower() for i in black_list):
+            # if "./" in path:
+            #    path = path.replace("./", '\n'+'/')
+            for i in range(1, 6):
+                if path:
+                    if path.startswith('/'):
+                        path = path[1:]
+                    elif path.startswith('.'):
+                        path = path[1:]
+
+            config.set_path(path.strip())

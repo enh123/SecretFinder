@@ -1,12 +1,15 @@
 import re
+
 from colorama import Fore
+
 from modules import config
+
 
 def main():
     key_list = []
     value_list = []
-    url_list = config.get_value("url_list")
-    if url_list is not None:
+    url_list = config.get_args("url_list")
+    if url_list:
         for url in url_list:
             keys = re.findall(r'[?&]([0-9a-zA-Z_]+)=', url.strip())
             values = re.findall(r'=([0-9a-zA-Z_]*)', url.strip())
@@ -19,8 +22,8 @@ def main():
 
     print(Fore.YELLOW + "----------------key----------------")
     for key in set(key_list):
-        print(Fore.RED+key)
+        print(Fore.RED + key)
 
     print('\n' + Fore.YELLOW + "----------------value----------------")
     for value in set(value_list):
-        print(Fore.RED+value)
+        print(Fore.RED + value)

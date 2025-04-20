@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from modules import config
 
@@ -50,11 +51,13 @@ def parse_args():
     if args.headers:
         for header in args.headers:
             if ':' in header:
-                header_parts = header.split(':')
-                if len(header_parts) >= 2:
-                    headers[header_parts[0]] = header_parts[1]
+                try:
+                    header_parts = header.split(':')
+                    if len(header_parts) == 2:
+                        headers[header_parts[0].strip()] = header_parts[1].strip()
+                except Exception as e:
+                    sys.exit(e)
     config.set_args("headers", headers)
-
 
 def main():
     parse_args()

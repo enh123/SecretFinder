@@ -6,13 +6,13 @@ from modules import config
 
 
 def check_args():
-    if not (config.get_value("url") or config.get_value("file")):
+    if not (config.get_args("url") or config.get_args("file")):
         sys.exit("请指定一个url或url文件")
 
-    elif config.get_value("url") and config.get_value("file"):
+    elif config.get_args("url") and config.get_args("file"):
         sys.exit("-u和-f不能同时使用")
 
-    elif  config.get_value("url") and ("-param" in sys.argv or "--param" in sys.argv):
+    elif  config.get_args("url") and ("-param" in sys.argv or "--param" in sys.argv):
         sys.exit("-u 和 -param 不能同时使用,正确用法为 python3 main.py -f url.txt -param")
 
 
@@ -39,21 +39,21 @@ def banner():
 
 def main():
     check_args()
-    url=config.get_value("url")
+    url=config.get_args("url")
     if url:
         url=check_url_format(url)
-        config.set_value("url",url if url else None)
+        config.set_args("url",url if url else None)
 
-    if config.get_value("file"):
+    if config.get_args("file"):
         try:
-            with open(config.get_value("file"),"r",encoding='utf-8') as file:
+            with open(config.get_args("file"),"r",encoding='utf-8') as file:
                 url_list=[]
                 for url in file.readlines():
                     url=check_url_format(url.strip())
                     if url:
                         url_list.append(url)
                 if url_list:
-                    config.set_value("url_list",url_list)
-        except Exception as e:
-            sys.exit(e)
+                    config.set_url_list(url_list)
+        except:
+            pass
     banner()

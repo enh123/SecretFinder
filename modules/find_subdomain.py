@@ -1,49 +1,41 @@
 import re
-from modules import config
+from functools import lru_cache
+
 import tldextract
 
-def find_subdomain(response_text):
-    url = config.get_value("url")
-    domain = config.get_value("domain")
-    type = None
-    domains = None
-    if domain:
-        if ',' in domain:
-            type="multi_domain"
-            domains = domain.split(',')
-        else:
-            type="single_domain"
-    elif not domain and not config.get_value("url_list") and url:
-        type="single_domain"
-        ext = tldextract.extract(url)
-        domain = f"{ext.domain}.{ext.suffix}"
-    else:
+from modules import config
+
+
+@lru_cache(maxsize=1)  # Least Recently Used Cache
+def _get_patterns():
+    url = config.get_args("url")
+    url_list = config.get_url_list()
+    domain_list = config.get_args("domain_list")
+
+    patterns = []
+    if domain_list:
+        for dom in domain_list:
+            patterns.append(
+                re.compile(r'(?:[A-Za-z0-9_-]+\.)+' + re.escape(dom))
+            )
+    elif url and not url_list:
+        parsed = tldextract.extract(url)
+        top = f"{parsed.domain}.{parsed.suffix}"
+        patterns.append(
+            re.compile(r'(?:[A-Za-z0-9_-]+\.)+' + re.escape(top))
+        )
+
+    return patterns
+
+
+def find(response_text):
+    if not config.get_args("domain_list") and not config.get_args("url"):
         return
 
-    if type == "single_domain":
-        regex = r'(?:[a-zA-Z0-9_-]+\.)+' + domain
+    for pat in _get_patterns():
         try:
-            subdomains = re.findall(regex, response_text, re.IGNORECASE)
-            if subdomains:
-                for subdomain in subdomains:
-                    config.set_subdomain(subdomain.strip())
-        except:
-            pass
-    if type=="multi_domain":
-        for domain in domains:
-            regex = r'(?:[a-zA-Z0-9_-]+\.)+' + domain
-            try:
-                subdomains = re.findall(regex, response_text, re.IGNORECASE)
-                if subdomains:
-                    for subdomain in subdomains:
-                        config.set_subdomain(subdomain.strip())
-            except:
-                pass
-
-
-
-
-
-
-
-
+            for sub in pat.findall(response_text):
+                config.set_subdomain(sub.strip())
+        except Exception:
+            # 某些边缘正则可能会抛错，忽略即可
+            continue

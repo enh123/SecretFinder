@@ -2,7 +2,6 @@ import os
 import signal
 import sys
 from concurrent.futures.thread import ThreadPoolExecutor
-from multiprocessing import Lock
 
 import requests
 from colorama import Fore, init
@@ -30,7 +29,6 @@ class Search:
         self._stop_flag = False
         # 注册信号处理
         signal.signal(signal.SIGINT, self._signal_handler)
-        self.lock = Lock()
         self.session = requests.session()
 
     def _signal_handler(self, signum, frame):
@@ -47,8 +45,8 @@ class Search:
                                         timeout=self.timeout)
         except Exception as e:
             if self.url_list and not self.url:
-                with self.lock:
-                    process_bar.update(1)
+                print(e)
+                process_bar.update(1)
             return
 
         if response.text and response.status_code != 404:
@@ -63,8 +61,7 @@ class Search:
             find_subdomain.find(response.text)
             find_path.find(response.text)
 
-        with self.lock:
-            if self.url_list and not self.url:
+            if self.url_list:
                 process_bar.update(1)
 
     def print_result(self):

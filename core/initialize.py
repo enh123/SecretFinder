@@ -17,6 +17,9 @@ def parse_args():
     parser.add_argument("-param", "--param",
                         help="不发起请求,提取url中的参数和值,与-f一起使用",
                         required=False, action="store_true")
+    parser.add_argument("-path", "--path",
+                        help="提取页面中的路径",
+                        required=False, action="store_true")
     parser.add_argument("-timeout", "--timeout", dest="timeout", help="请求最长等待时间", required=False,
                         default=25, type=int)
     parser.add_argument("-t", "--threads", dest="threads", type=int, help="设置线程数,默认为10个线程", default=10)

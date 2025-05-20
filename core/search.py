@@ -58,7 +58,9 @@ class Search:
                     pass
 
             find_subdomain.find(response.text)
-            find_path.find(response.text)
+            if "-path" in sys.argv or "--path" in sys.argv:
+                find_path.find(response.text)
+            
 
             if self.url_list:
                 process_bar.update(1)

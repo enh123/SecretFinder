@@ -10,7 +10,7 @@ from tqdm import tqdm
 from modules import config
 from modules import find_subdomain, find_param, find_path
 
-init(autoreset=True, strip=False)  # strip=False 表示不移除 ANSI 转义序列。
+init(autoreset=True)  # strip=False 表示不移除 ANSI 转义序列。
 requests.packages.urllib3.disable_warnings()
 
 

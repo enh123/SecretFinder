@@ -62,16 +62,19 @@ def parse_args():
     #                sys.exit(e)
 
     if args.headers:
-    for header in args.headers:
-        if ':' in header:
-            try:
-                # Split on the FIRST colon only, handling values with extra colons
-                key, value = header.split(':', 1)  # <-- Use maxsplit=1
-                key = key.strip()
-                value = value.strip()
-                headers[key] = value
-            except Exception as e:
-                sys.exit(e)
+        for header in args.headers:
+            if ':' in header:
+                try:
+                    # Split on the FIRST colon only, handling values with extra colons
+                    key, value = header.split(':', 1)  # <-- Use maxsplit=1
+                    key = key.strip()
+                    value = value.strip()
+                    headers[key] = value
+                except Exception as e:
+                    sys.exit(e)
+            
+        
+    
                 
     config.set_args("headers", headers)
 

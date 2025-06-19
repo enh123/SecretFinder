@@ -51,15 +51,28 @@ def parse_args():
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0"
     }
+    #if args.headers:
+    #    for header in args.headers:
+    #        if ':' in header:
+    #            try:
+    #                header_parts = header.split(':')
+    #                if len(header_parts) == 2:
+    #                    headers[header_parts[0].strip()] = header_parts[1].strip()
+    #            except Exception as e:
+    #                sys.exit(e)
+
     if args.headers:
-        for header in args.headers:
-            if ':' in header:
-                try:
-                    header_parts = header.split(':')
-                    if len(header_parts) == 2:
-                        headers[header_parts[0].strip()] = header_parts[1].strip()
-                except Exception as e:
-                    sys.exit(e)
+    for header in args.headers:
+        if ':' in header:
+            try:
+                # Split on the FIRST colon only, handling values with extra colons
+                key, value = header.split(':', 1)  # <-- Use maxsplit=1
+                key = key.strip()
+                value = value.strip()
+                headers[key] = value
+            except Exception as e:
+                sys.exit(e)
+                
     config.set_args("headers", headers)
 
 def main():

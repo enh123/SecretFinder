@@ -76,7 +76,7 @@ class Search:
                 if url_data != {}:
                     is_None = False
         if is_None and config.get_subdomain_list() and config.get_path_list:
-            sys.exit("\n" + Fore.RED + "未找到敏感信息")
+            print("\n" + Fore.RED + "未找到敏感信息")
 
         for pattern, description in self.pattern_description:
             urls_data = self.data_dict[pattern]  # urls_data=[url:[data,data],url:[data,data]]

@@ -46,3 +46,5 @@ py -3 main.py -f final_urls.txt -t 10 --proxy="http://127.0.0.1:8080" -d baidu.c
 https://github.com/abhi-recon/jssecretscanner
 
 https://github.com/gh0stkey/HaE
+
+https://github.com/GerbenJavado/LinkFinder

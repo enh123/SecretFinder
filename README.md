@@ -39,6 +39,9 @@ httpx -l secret_urls.txt -t 10 -mc 200 --retries 3 >> final_urls.txt
 py -3 main.py -f final_urls.txt -t 10 --proxy="http://127.0.0.1:8080" -d baidu.com,baidu.cn >> result.txt
  
 
+2025/7/20  引入并优化linkfinder正则
+
+linkfinder匹配不到像"#/components/schemas/UpdateStatusParams"这样的路径，这种路径在swagger api中经常出现
 
 
 参考了以下项目：

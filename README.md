@@ -30,11 +30,11 @@ key:'123456'
 使用技巧:
 
 
-katana -d 5 -jc -kf all -ef jpg,png,css,svg,woff,ttf  -s breadth-first -timeout 15 -retry 2 -headless -nos -automatic-form-fill -u urls.txt |grep -E '\.js$|\.json$|\.config$|\.log$|\.txt$|\.sql$|\.env$|\.xml$' >> secret_urls.txt
+katana -d 5 -jc -kf all -ef jpg,png,css,woff,ttf  -s breadth-first -timeout 15 -retry 2 -headless -nos -automatic-form-fill -u urls.txt |grep -E '\.js$|\.json$|\.config$|\.log$|\.txt$|\.sql$|\.env$|\.xml$' >> secret_urls.txt
 
 sort -u secret_urls.txt -o secret_urls.txt
 
-httpx -l secret_urls.txt -mc 200 --retries 3 >> final_urls.txt
+httpx -l secret_urls.txt -t 10 -mc 200 --retries 3 >> final_urls.txt
 
 py -3 main.py -f final_urls.txt -t 10 --proxy="http://127.0.0.1:8080" -d baidu.com,baidu.cn >> result.txt
  

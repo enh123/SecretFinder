@@ -48,13 +48,43 @@ def set_path(path):
     if path:
         path_list.append(path.strip())
 
+#def get_path_list():
+#    seen = set()
+#    result = []
+#    for path in path_list:
+#        parsed = urlparse(path)
+#        normalized_path = parsed.path.lower().rstrip('/')
+#        param_keys = tuple(sorted(parse_qs(parsed.query).keys()))
+#        dedup_key = (normalized_path, param_keys)
+#
+#        if dedup_key not in seen:
+#            seen.add(dedup_key)
+#            result.append(path)
+#    return result
+
 def get_path_list():
     seen = set()
     result = []
     for path in path_list:
-        parsed = urlparse(path)
-        normalized_path = parsed.path.lower().rstrip('/')
-        param_keys = tuple(sorted(parse_qs(parsed.query).keys()))
+        # 检查是否是片段路径（以#开头）
+        if path.startswith('#') and '/' in path[1:]:
+            # 将 #/path 转换为 /path
+            normalized_path = '/' + path[2:].lower().rstrip('/')
+            param_keys = ()
+        else:
+            parsed = urlparse(path)
+            # 优先使用 fragment（片段）如果存在且有效
+            if parsed.fragment and parsed.fragment.startswith('/'):
+                normalized_path = parsed.fragment.lower().rstrip('/')
+                param_keys = tuple(sorted(parse_qs(parsed.query).keys()))
+            else:
+                normalized_path = parsed.path.lower().rstrip('/')
+                param_keys = tuple(sorted(parse_qs(parsed.query).keys()))
+
+        # 处理空路径
+        if not normalized_path:
+            continue
+
         dedup_key = (normalized_path, param_keys)
 
         if dedup_key not in seen:

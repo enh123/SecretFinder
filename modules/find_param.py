@@ -8,7 +8,7 @@ from modules import config
 def main():
     key_list = []
     value_list = []
-    url_list = config.get_args("url_list")
+    url_list = config.get_url_list()
     if url_list:
         for url in url_list:
             keys = re.findall(r'[?&]([0-9a-zA-Z_]+)=', url.strip())
@@ -20,7 +20,7 @@ def main():
                 if len(value) <= 30 and not value.isdigit():
                     value_list.append(value)
 
-    print(Fore.YELLOW + "----------------key----------------")
+    print(Fore.YELLOW + "----------------key------------------")
     for key in set(key_list):
         print(Fore.RED + key)
 

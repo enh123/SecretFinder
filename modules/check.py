@@ -25,10 +25,10 @@ def check_url_format(url):
                 port=None
                 pass
             if port:
-                if int(port) != 443:
-                    url = "http://" + url
-                else:
+                if int(port) == 443:
                     url = "https://" + url
+                else:
+                    url = "http://" + url
             else:
                 url = "http://" + url
 
@@ -57,3 +57,4 @@ def main():
         except:
             pass
     banner()
+

@@ -8,7 +8,7 @@ from modules import config
 def check_args():
     if not (config.get_args("url") or config.get_args("file") or "-s" in sys.argv or "--stdin" in sys.argv
             or config.get_stdin_text()):
-        sys.exit("请指定一个url或url文件,或使用标准输入")
+        sys.exit("请指定一个url或url文件,或者从stdin输入响应体作为要提取敏感信息的目标文本")
 
     elif config.get_args("url") and config.get_args("file"):
         sys.exit("-u和-f不能同时使用")

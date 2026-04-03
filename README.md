@@ -27,26 +27,6 @@ key:'123456'
 'key' = '123456'
 
 
-使用技巧:
-
-
-katana -d 5 -jc -kf all -ef jpg,png,css,woff,ttf  -s breadth-first -timeout 15 -retry 2 -headless -nos -automatic-form-fill -u urls.txt |grep -E '\.js$|\.json$|\.config$|\.log$|\.txt$|\.sql$|\.env$|\.xml$' >> secret_urls.txt
-
-sort -u secret_urls.txt -o secret_urls.txt
-
-httpx -l secret_urls.txt -t 10 -mc 200 --retries 3 >> final_urls.txt
-
-py -3 main.py -f final_urls.txt -t 10 --proxy="http://127.0.0.1:8080" -d baidu.com,baidu.cn >> result.txt
- 
-
-
------------------------------------------
-
-2025/7/20  引入并优化linkfinder正则
-
-linkfinder匹配不到这样的路径例如 "#/components/schemas/UpdateStatusParams"  ,  "components/schemas/UpdateStatusParams" 
-
-
 ----------------------------------------
 
 参考了以下项目：
